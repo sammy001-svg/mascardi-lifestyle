@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R public/. $DEPLOYPATH/
+    - /bin/mkdir -p $HOME/app $HOME/config $HOME/database $HOME/resources $HOME/storage/logs $HOME/storage/cache
+    - /bin/cp -R app/. $HOME/app/
+    - /bin/cp -R config/. $HOME/config/
+    - /bin/cp -R database/. $HOME/database/
+    - /bin/cp -R resources/. $HOME/resources/
+    - /bin/cp -R storage/. $HOME/storage/

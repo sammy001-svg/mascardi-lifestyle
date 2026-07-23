@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/\")",
+      "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/\")",
+      "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/index.php\")",
+      "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/assets/css/site.css\")"
+    ]
+  }
+}
