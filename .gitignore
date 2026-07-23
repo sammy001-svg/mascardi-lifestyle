@@ -1,0 +1,10 @@
+/config/config.php
+/config/mpesa.php
+/database/seed_admin.sql
+/storage/logs/*.log
+/storage/cache/*
+!/storage/logs/.gitkeep
+!/storage/cache/.gitkeep
+/vendor/
+.DS_Store
+Thumbs.db
