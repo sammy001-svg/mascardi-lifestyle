@@ -47,6 +47,15 @@ final class MpesaTransaction
         return $stmt->fetch() ?: null;
     }
 
+    public static function findLatestForEventRegistration(int $registrationId): ?array
+    {
+        $stmt = Database::connection()->prepare(
+            'SELECT * FROM mpesa_transactions WHERE event_registration_id = :id ORDER BY created_at DESC LIMIT 1'
+        );
+        $stmt->execute(['id' => $registrationId]);
+        return $stmt->fetch() ?: null;
+    }
+
     /** Idempotent: only applies the update if the transaction is still pending/initiated. */
     public static function markResolved(PDO $pdo, int $id, string $status, ?string $receiptNumber, ?string $resultCode, ?string $resultDesc, ?string $rawPayload): bool
     {

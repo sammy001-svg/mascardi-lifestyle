@@ -6,6 +6,8 @@ namespace App\Services\Mpesa;
 
 use App\Core\Database;
 use App\Core\Logger;
+use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\MpesaTransaction;
 use App\Models\Order;
 use App\Models\Product;
@@ -71,7 +73,9 @@ final class CallbackHandler
                 self::resolveOrder($pdo, (int) $mpesaTx['order_id'], $status);
             }
 
-            // Event ticket resolution lands in Phase 4 alongside the events/ticketing feature.
+            if ($mpesaTx['transaction_type'] === 'event_ticket' && $mpesaTx['event_registration_id']) {
+                self::resolveEventTicket($pdo, (int) $mpesaTx['event_registration_id'], $status);
+            }
 
             $pdo->commit();
         } catch (\Throwable $e) {
@@ -106,5 +110,29 @@ final class CallbackHandler
         if ($oversold) {
             Order::setAdminNotes($orderId, 'Oversold at payment time — one or more items exceeded available stock. Needs manual review.');
         }
+    }
+
+    private static function resolveEventTicket(\PDO $pdo, int $registrationId, string $paymentStatus): void
+    {
+        if ($paymentStatus !== 'success') {
+            EventRegistration::markFailed($pdo, $registrationId);
+            return;
+        }
+
+        $registration = EventRegistration::find($registrationId);
+        if (!$registration) {
+            return;
+        }
+
+        $capacityInfo = Event::lockForCapacityCheck($pdo, (int) $registration['event_id']);
+        $notes = null;
+
+        if ($capacityInfo['capacity'] !== null && $capacityInfo['used'] + (int) $registration['quantity'] > $capacityInfo['capacity']) {
+            // Payment already captured — confirm the ticket anyway and flag it
+            // for manual review rather than declining a paid customer.
+            $notes = 'Oversold at payment time — event capacity was exceeded. Needs manual review.';
+        }
+
+        EventRegistration::confirm($pdo, $registrationId, $notes);
     }
 }

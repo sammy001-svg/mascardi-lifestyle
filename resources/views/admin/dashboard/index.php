@@ -34,7 +34,7 @@
         <div>
             <div class="stat-card__label">Events</div>
             <div class="stat-card__value"><?= (int) $eventCount ?></div>
-            <div class="stat-card__hint">Event ticketing launches in Phase 4</div>
+            <div class="stat-card__hint"><a href="<?= admin_url('events') ?>">View events &rarr;</a></div>
         </div>
         <div class="stat-card__icon">&#127903;</div>
     </div>

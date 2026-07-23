@@ -28,8 +28,8 @@ $navItem = static function (string $icon, string $label, string $module, string 
         <?php $navItem('&#128179;', 'Orders', 'orders', $activeModule); ?>
 
         <div class="admin-nav__section">Events</div>
-        <?php $navItem('&#127903;', 'Events', 'events', $activeModule, false); ?>
-        <?php $navItem('&#127915;', 'Registrations', 'registrations', $activeModule, false); ?>
+        <?php $navItem('&#127903;', 'Events', 'events', $activeModule); ?>
+        <?php $navItem('&#127915;', 'Registrations', 'registrations', $activeModule); ?>
 
         <div class="admin-nav__section">System</div>
         <?php $navItem('&#128247;', 'Media Library', 'media', $activeModule, false); ?>

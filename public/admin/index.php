@@ -17,6 +17,8 @@ $moduleMap = [
     'products' => \App\Controllers\Admin\ProductsController::class,
     'product-categories' => \App\Controllers\Admin\ProductCategoriesController::class,
     'orders' => \App\Controllers\Admin\OrdersController::class,
+    'events' => \App\Controllers\Admin\EventsController::class,
+    'registrations' => \App\Controllers\Admin\RegistrationsController::class,
     'settings' => \App\Controllers\Admin\SettingsController::class,
 ];
 

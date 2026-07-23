@@ -6,6 +6,7 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 
 use App\Controllers\Site\CartController;
 use App\Controllers\Site\CheckoutController;
+use App\Controllers\Site\EventsController;
 use App\Controllers\Site\HomeController;
 use App\Controllers\Site\ShopController;
 use App\Core\Request;
@@ -31,5 +32,13 @@ $router->post('/checkout', [$checkout, 'store']);
 $router->get('/checkout/waiting/{orderNumber}', [$checkout, 'waiting']);
 $router->post('/checkout/retry/{orderNumber}', [$checkout, 'retry']);
 $router->get('/checkout/confirmation/{orderNumber}', [$checkout, 'confirmation']);
+
+$events = new EventsController();
+$router->get('/events', [$events, 'index']);
+$router->get('/events/waiting/{ticketCode}', [$events, 'waiting']);
+$router->post('/events/retry/{ticketCode}', [$events, 'retry']);
+$router->get('/events/confirmation/{ticketCode}', [$events, 'confirmation']);
+$router->get('/events/{slug}', [$events, 'show']);
+$router->post('/events/{slug}/register', [$events, 'register']);
 
 $router->dispatch(Request::method(), Request::path());

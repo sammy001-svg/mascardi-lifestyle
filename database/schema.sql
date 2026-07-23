@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS event_registrations (
     total_amount_cents INT UNSIGNED NOT NULL DEFAULT 0,
     ticket_code VARCHAR(20) NULL UNIQUE,
     checked_in_at DATETIME NULL,
+    admin_notes TEXT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_event_registrations_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
