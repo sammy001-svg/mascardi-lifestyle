@@ -12,6 +12,7 @@ use App\Core\Uploader;
 use App\Core\Validator;
 use App\Core\View;
 use App\Models\ActivityLog;
+use App\Models\MediaUpload;
 use App\Models\Pillar;
 
 final class PillarsController
@@ -47,12 +48,18 @@ final class PillarsController
             redirect_with_errors(admin_url('pillars', 'create'), ['slug' => ['That slug is already in use.']], $_POST);
         }
 
+        $adminId = Auth::user()['id'] ?? null;
         $imagePath = null;
+
         if ($file = Request::file('image')) {
             try {
-                $imagePath = Uploader::storeImage($file, 'pillars');
+                $imagePath = Uploader::storeImage($file, 'pillars', $adminId);
             } catch (\RuntimeException $e) {
                 redirect_with_errors(admin_url('pillars', 'create'), ['image' => [$e->getMessage()]], $_POST);
+            }
+        } elseif (($mediaId = Request::intInput('picked_media_id')) > 0) {
+            if ($media = MediaUpload::find($mediaId)) {
+                $imagePath = $media['file_path'];
             }
         }
 
@@ -99,12 +106,21 @@ final class PillarsController
             redirect_with_errors(admin_url('pillars', 'edit', ['id' => $id]), ['slug' => ['That slug is already in use.']], $_POST);
         }
 
+        $adminId = Auth::user()['id'] ?? null;
+        $oldImagePath = $pillar['image_path'];
+        $imageChanged = false;
+
         if ($file = Request::file('image')) {
             try {
-                $data['image_path'] = Uploader::storeImage($file, 'pillars');
-                Uploader::delete($pillar['image_path']);
+                $data['image_path'] = Uploader::storeImage($file, 'pillars', $adminId);
+                $imageChanged = true;
             } catch (\RuntimeException $e) {
                 redirect_with_errors(admin_url('pillars', 'edit', ['id' => $id]), ['image' => [$e->getMessage()]], $_POST);
+            }
+        } elseif (($mediaId = Request::intInput('picked_media_id')) > 0) {
+            if ($media = MediaUpload::find($mediaId)) {
+                $data['image_path'] = $media['file_path'];
+                $imageChanged = true;
             }
         }
 
@@ -112,6 +128,10 @@ final class PillarsController
 
         Pillar::update($id, $data);
         ActivityLog::record(Auth::user()['id'] ?? null, 'pillar.update', 'pillar', $id, $data['name']);
+
+        if ($imageChanged && $oldImagePath && $oldImagePath !== ($data['image_path'] ?? null) && empty(MediaUpload::usages($oldImagePath))) {
+            Uploader::delete($oldImagePath);
+        }
 
         Session::flash('success', 'Pillar updated.');
         Response::redirect(admin_url('pillars'));
@@ -122,8 +142,10 @@ final class PillarsController
         $id = Request::intInput('id');
         $pillar = Pillar::find($id);
         if ($pillar) {
-            Uploader::delete($pillar['image_path']);
             Pillar::delete($id);
+            if (!empty($pillar['image_path']) && empty(MediaUpload::usages($pillar['image_path']))) {
+                Uploader::delete($pillar['image_path']);
+            }
             ActivityLog::record(Auth::user()['id'] ?? null, 'pillar.delete', 'pillar', $id, $pillar['name']);
             Session::flash('success', 'Pillar deleted.');
         }

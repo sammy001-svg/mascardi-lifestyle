@@ -13,6 +13,7 @@ use App\Core\Uploader;
 use App\Core\Validator;
 use App\Core\View;
 use App\Models\ActivityLog;
+use App\Models\MediaUpload;
 use App\Models\Product;
 use App\Models\ProductCategory;
 
@@ -57,7 +58,7 @@ final class ProductsController
         $data['is_active'] = Request::boolInput('is_active') ? 1 : 0;
 
         $id = Product::create($data);
-        $this->handleImageUploads($id);
+        $this->handleImages($id, Auth::user()['id'] ?? null);
 
         ActivityLog::record(Auth::user()['id'] ?? null, 'product.create', 'product', $id, $data['name']);
         Session::flash('success', 'Product created.');
@@ -105,7 +106,7 @@ final class ProductsController
         $data['is_active'] = Request::boolInput('is_active') ? 1 : 0;
 
         Product::update($id, $data);
-        $this->handleImageUploads($id);
+        $this->handleImages($id, Auth::user()['id'] ?? null);
 
         ActivityLog::record(Auth::user()['id'] ?? null, 'product.update', 'product', $id, $data['name']);
         Session::flash('success', 'Product updated.');
@@ -117,10 +118,13 @@ final class ProductsController
         $id = Request::intInput('id');
         $product = Product::find($id);
         if ($product) {
-            foreach (Product::images($id) as $image) {
-                Uploader::delete($image['image_path']);
-            }
+            $images = Product::images($id);
             Product::delete($id); // product_images rows cascade-delete via FK
+            foreach ($images as $image) {
+                if (empty(MediaUpload::usages($image['image_path']))) {
+                    Uploader::delete($image['image_path']);
+                }
+            }
             ActivityLog::record(Auth::user()['id'] ?? null, 'product.delete', 'product', $id, $product['name']);
             Session::flash('success', 'Product deleted.');
         }
@@ -133,8 +137,10 @@ final class ProductsController
         $productId = Request::intInput('id');
         $image = Product::findImage($imageId);
         if ($image && (int) $image['product_id'] === $productId) {
-            Uploader::delete($image['image_path']);
             Product::deleteImage($imageId);
+            if (empty(MediaUpload::usages($image['image_path']))) {
+                Uploader::delete($image['image_path']);
+            }
         }
         Response::redirect(admin_url('products', 'edit', ['id' => $productId]));
     }
@@ -147,38 +153,33 @@ final class ProductsController
         Response::redirect(admin_url('products', 'edit', ['id' => $productId]));
     }
 
-    private function handleImageUploads(int $productId): void
+    private function handleImages(int $productId, ?int $adminId): void
     {
-        if (empty($_FILES['images']) || empty($_FILES['images']['name'][0])) {
-            return;
-        }
-
         $existingCount = count(Product::images($productId));
-        $files = $_FILES['images'];
-        $count = count($files['name']);
+        $sortOrder = $existingCount;
+        $firstImage = $existingCount === 0;
 
-        for ($i = 0; $i < $count; $i++) {
-            if (($files['error'][$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
-                continue;
-            }
-
-            $file = [
-                'name' => $files['name'][$i],
-                'type' => $files['type'][$i],
-                'tmp_name' => $files['tmp_name'][$i],
-                'error' => $files['error'][$i],
-                'size' => $files['size'][$i],
-            ];
-
+        foreach (Request::normalizeFiles('images') as $file) {
             try {
-                $path = Uploader::storeImage($file, 'products');
-                $isPrimary = $existingCount === 0 && $i === 0;
-                Product::addImage($productId, $path, $isPrimary, $existingCount + $i);
+                $path = Uploader::storeImage($file, 'products', $adminId);
             } catch (\RuntimeException) {
                 // Skip files that fail validation rather than aborting the whole save —
                 // the product itself was already created/updated successfully.
                 continue;
             }
+            Product::addImage($productId, $path, $firstImage, $sortOrder);
+            $firstImage = false;
+            $sortOrder++;
+        }
+
+        foreach ((array) ($_POST['picked_media_ids'] ?? []) as $rawId) {
+            $media = MediaUpload::find((int) $rawId);
+            if (!$media) {
+                continue;
+            }
+            Product::addImage($productId, $media['file_path'], $firstImage, $sortOrder);
+            $firstImage = false;
+            $sortOrder++;
         }
     }
 

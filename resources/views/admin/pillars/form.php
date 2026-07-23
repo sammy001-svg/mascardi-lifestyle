@@ -55,12 +55,14 @@ $val = static function (string $key, $default = '') use ($pillar, $isEdit) {
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group js-media-field">
                 <label class="form-label" for="image">Card image</label>
-                <?php if ($isEdit && $pillar['image_path']): ?>
-                    <div style="margin-bottom:10px;"><img src="<?= e(upload_url($pillar['image_path'])) ?>" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:8px;"></div>
-                <?php endif; ?>
+                <img class="js-media-preview" src="<?= $isEdit && $pillar['image_path'] ? e(upload_url($pillar['image_path'])) : '' ?>" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:10px;<?= $isEdit && $pillar['image_path'] ? '' : 'display:none;' ?>">
                 <input class="form-control<?= has_field_error('image') ? ' has-error' : '' ?>" type="file" id="image" name="image" accept="image/png,image/jpeg,image/webp">
+                <input type="hidden" name="picked_media_id" value="">
+                <div>
+                    <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="single" style="margin-top:8px;">Choose from Library</button>
+                </div>
                 <div class="form-hint">JPEG, PNG, or WEBP, up to 5MB. <?= $isEdit ? 'Leave blank to keep the current image.' : '' ?></div>
                 <?php if ($err = field_errors('image')): ?><div class="form-error"><?= e($err[0]) ?></div><?php endif; ?>
             </div>

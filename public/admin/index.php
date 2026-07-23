@@ -19,6 +19,7 @@ $moduleMap = [
     'orders' => \App\Controllers\Admin\OrdersController::class,
     'events' => \App\Controllers\Admin\EventsController::class,
     'registrations' => \App\Controllers\Admin\RegistrationsController::class,
+    'media' => \App\Controllers\Admin\MediaController::class,
     'settings' => \App\Controllers\Admin\SettingsController::class,
 ];
 

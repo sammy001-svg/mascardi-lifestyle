@@ -71,4 +71,32 @@ final class Request
         $value = self::input($key);
         return $value === '1' || $value === 1 || $value === 'on' || $value === true;
     }
+
+    /**
+     * Normalizes a multi-file <input type="file" name="key[]" multiple> submission
+     * (PHP's $_FILES[$key] is parallel arrays) into a flat list of single-file
+     * arrays shaped like a normal $_FILES entry, skipping empty slots.
+     */
+    public static function normalizeFiles(string $key): array
+    {
+        if (empty($_FILES[$key]) || !is_array($_FILES[$key]['name'] ?? null)) {
+            return [];
+        }
+
+        $result = [];
+        $count = count($_FILES[$key]['name']);
+        for ($i = 0; $i < $count; $i++) {
+            if (($_FILES[$key]['error'][$i] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+            $result[] = [
+                'name' => $_FILES[$key]['name'][$i],
+                'type' => $_FILES[$key]['type'][$i],
+                'tmp_name' => $_FILES[$key]['tmp_name'][$i],
+                'error' => $_FILES[$key]['error'][$i],
+                'size' => $_FILES[$key]['size'][$i],
+            ];
+        }
+        return $result;
+    }
 }

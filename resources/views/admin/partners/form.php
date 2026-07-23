@@ -59,12 +59,14 @@ $val = static function (string $key, $default = '') use ($partner, $isEdit) {
                 <input class="form-control" type="number" id="sort_order" name="sort_order" value="<?= e($val('sort_order', 0)) ?>" style="max-width:160px;">
             </div>
 
-            <div class="form-group">
+            <div class="form-group js-media-field">
                 <label class="form-label" for="logo">Logo</label>
-                <?php if ($isEdit && $partner['logo_path']): ?>
-                    <div style="margin-bottom:10px;"><img src="<?= e(upload_url($partner['logo_path'])) ?>" alt="" style="width:120px;height:80px;object-fit:contain;border-radius:8px;background:#f3f4f8;"></div>
-                <?php endif; ?>
+                <img class="js-media-preview" src="<?= $isEdit && $partner['logo_path'] ? e(upload_url($partner['logo_path'])) : '' ?>" alt="" style="width:120px;height:80px;object-fit:contain;border-radius:8px;background:#f3f4f8;margin-bottom:10px;<?= $isEdit && $partner['logo_path'] ? '' : 'display:none;' ?>">
                 <input class="form-control<?= has_field_error('logo') ? ' has-error' : '' ?>" type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp">
+                <input type="hidden" name="picked_media_id" value="">
+                <div>
+                    <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="single" style="margin-top:8px;">Choose from Library</button>
+                </div>
                 <div class="form-hint">JPEG, PNG, or WEBP, up to 5MB. <?= $isEdit ? 'Leave blank to keep the current logo.' : '' ?></div>
                 <?php if ($err = field_errors('logo')): ?><div class="form-error"><?= e($err[0]) ?></div><?php endif; ?>
             </div>

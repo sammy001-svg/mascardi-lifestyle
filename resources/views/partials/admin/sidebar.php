@@ -32,7 +32,7 @@ $navItem = static function (string $icon, string $label, string $module, string 
         <?php $navItem('&#127915;', 'Registrations', 'registrations', $activeModule); ?>
 
         <div class="admin-nav__section">System</div>
-        <?php $navItem('&#128247;', 'Media Library', 'media', $activeModule, false); ?>
+        <?php $navItem('&#128247;', 'Media Library', 'media', $activeModule); ?>
         <?php $navItem('&#9881;', 'Settings', 'settings', $activeModule); ?>
         <?php $navItem('&#128101;', 'Admin Users', 'admin-users', $activeModule, false); ?>
     </nav>

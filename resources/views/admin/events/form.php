@@ -93,12 +93,14 @@ $currentType = $isEdit ? $event['event_type'] : ($val('event_type') ?: 'free');
                 <input class="form-control" type="text" id="venue" name="venue" value="<?= e($val('venue')) ?>">
             </div>
 
-            <div class="form-group">
+            <div class="form-group js-media-field">
                 <label class="form-label" for="image">Event image</label>
-                <?php if ($isEdit && $event['image_path']): ?>
-                    <div style="margin-bottom:10px;"><img src="<?= e(upload_url($event['image_path'])) ?>" alt="" style="width:160px;height:100px;object-fit:cover;border-radius:8px;"></div>
-                <?php endif; ?>
+                <img class="js-media-preview" src="<?= $isEdit && $event['image_path'] ? e(upload_url($event['image_path'])) : '' ?>" alt="" style="width:160px;height:100px;object-fit:cover;border-radius:8px;margin-bottom:10px;<?= $isEdit && $event['image_path'] ? '' : 'display:none;' ?>">
                 <input class="form-control" type="file" id="image" name="image" accept="image/png,image/jpeg,image/webp">
+                <input type="hidden" name="picked_media_id" value="">
+                <div>
+                    <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="single" style="margin-top:8px;">Choose from Library</button>
+                </div>
                 <div class="form-hint">JPEG, PNG, or WEBP, up to 5MB. <?= $isEdit ? 'Leave blank to keep the current image.' : '' ?></div>
             </div>
 

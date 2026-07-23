@@ -14,6 +14,7 @@ use App\Core\Validator;
 use App\Core\View;
 use App\Models\ActivityLog;
 use App\Models\Event;
+use App\Models\MediaUpload;
 
 final class EventsController
 {
@@ -50,11 +51,17 @@ final class EventsController
             redirect_with_errors(admin_url('events', 'create'), ['slug' => ['That slug is already in use.']], $_POST);
         }
 
+        $adminId = Auth::user()['id'] ?? null;
+
         if ($file = Request::file('image')) {
             try {
-                $data['image_path'] = Uploader::storeImage($file, 'events');
+                $data['image_path'] = Uploader::storeImage($file, 'events', $adminId);
             } catch (\RuntimeException $e) {
                 redirect_with_errors(admin_url('events', 'create'), ['image' => [$e->getMessage()]], $_POST);
+            }
+        } elseif (($mediaId = Request::intInput('picked_media_id')) > 0) {
+            if ($media = MediaUpload::find($mediaId)) {
+                $data['image_path'] = $media['file_path'];
             }
         }
 
@@ -102,12 +109,21 @@ final class EventsController
             redirect_with_errors(admin_url('events', 'edit', ['id' => $id]), ['slug' => ['That slug is already in use.']], $_POST);
         }
 
+        $adminId = Auth::user()['id'] ?? null;
+        $oldImagePath = $event['image_path'];
+        $imageChanged = false;
+
         if ($file = Request::file('image')) {
             try {
-                $data['image_path'] = Uploader::storeImage($file, 'events');
-                Uploader::delete($event['image_path']);
+                $data['image_path'] = Uploader::storeImage($file, 'events', $adminId);
+                $imageChanged = true;
             } catch (\RuntimeException $e) {
                 redirect_with_errors(admin_url('events', 'edit', ['id' => $id]), ['image' => [$e->getMessage()]], $_POST);
+            }
+        } elseif (($mediaId = Request::intInput('picked_media_id')) > 0) {
+            if ($media = MediaUpload::find($mediaId)) {
+                $data['image_path'] = $media['file_path'];
+                $imageChanged = true;
             }
         }
 
@@ -115,6 +131,10 @@ final class EventsController
 
         Event::update($id, $data);
         ActivityLog::record(Auth::user()['id'] ?? null, 'event.update', 'event', $id, $data['title']);
+
+        if ($imageChanged && $oldImagePath && $oldImagePath !== ($data['image_path'] ?? null) && empty(MediaUpload::usages($oldImagePath))) {
+            Uploader::delete($oldImagePath);
+        }
 
         Session::flash('success', 'Event updated.');
         Response::redirect(admin_url('events'));
@@ -125,8 +145,10 @@ final class EventsController
         $id = Request::intInput('id');
         $event = Event::find($id);
         if ($event) {
-            Uploader::delete($event['image_path']);
             Event::delete($id); // event_registrations cascade-delete via FK
+            if (!empty($event['image_path']) && empty(MediaUpload::usages($event['image_path']))) {
+                Uploader::delete($event['image_path']);
+            }
             ActivityLog::record(Auth::user()['id'] ?? null, 'event.delete', 'event', $id, $event['title']);
             Session::flash('success', 'Event deleted.');
         }

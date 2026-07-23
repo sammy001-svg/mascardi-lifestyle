@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Core;
 
+use App\Models\MediaUpload;
+
 /**
  * Validates and stores an uploaded image: real MIME sniffing (not filename/
  * client Content-Type), size cap, GD re-encode to strip any embedded payload,
  * random filename. Returns the path relative to /public/uploads (e.g.
  * "pillars/ab12cd34.jpg") for storage in the DB, or throws on failure.
+ *
+ * Every store()/delete() also keeps the media_uploads library index in sync —
+ * this is the single choke point every admin upload flow goes through.
  */
 final class Uploader
 {
@@ -20,7 +25,7 @@ final class Uploader
         'image/webp' => 'webp',
     ];
 
-    public static function storeImage(array $file, string $subdir): string
+    public static function storeImage(array $file, string $subdir, ?int $uploadedBy = null): string
     {
         if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE && ($file['error'] ?? null) !== UPLOAD_ERR_OK) {
             throw new \RuntimeException('Upload failed. Please try again.');
@@ -80,7 +85,11 @@ final class Uploader
             throw new \RuntimeException('Could not save the uploaded image.');
         }
 
-        return trim($subdir, '/') . '/' . $filename;
+        $relativePath = trim($subdir, '/') . '/' . $filename;
+
+        MediaUpload::record($relativePath, (string) $file['name'], $mime, (int) $file['size'], $uploadedBy);
+
+        return $relativePath;
     }
 
     public static function delete(?string $relativePath): void
@@ -92,5 +101,6 @@ final class Uploader
         if (is_file($fullPath)) {
             @unlink($fullPath);
         }
+        MediaUpload::deleteByPath($relativePath);
     }
 }
