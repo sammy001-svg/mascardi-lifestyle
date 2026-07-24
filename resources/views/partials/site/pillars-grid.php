@@ -12,16 +12,22 @@
         <?php else: ?>
             <div class="pillar-grid">
                 <?php foreach ($pillars as $i => $pillar): ?>
-                    <a class="pillar-card js-tilt" href="<?= e($pillar['link_url'] ?: '#pillars') ?>" data-aos="fade-up" data-aos-delay="<?= ($i % 4) * 80 ?>">
-                        <?php if (!empty($pillar['image_path'])): ?>
-                            <img class="pillar-card__img" src="<?= e(upload_url($pillar['image_path'])) ?>" alt="<?= e($pillar['name']) ?>" loading="lazy">
-                        <?php else: ?>
-                            <div class="pillar-card__img pillar-card__img--placeholder">Image coming soon</div>
+                    <?php $hasImage = !empty($pillar['image_path']); ?>
+                    <a class="pillar-card js-tilt<?= $hasImage ? ' pillar-card--image' : '' ?>"
+                       href="<?= e($pillar['link_url'] ?: '#pillars') ?>"
+                       data-aos="fade-up" data-aos-delay="<?= ($i % 4) * 90 ?>"
+                       data-tilt-max="10" data-tilt-speed="500" data-tilt-scale="1.03"
+                       data-tilt-glare="true" data-tilt-max-glare="0.18">
+                        <?php if ($hasImage): ?>
+                            <div class="pillar-card__media">
+                                <img class="pillar-card__img" src="<?= e(upload_url($pillar['image_path'])) ?>" alt="<?= e($pillar['name']) ?>" loading="lazy">
+                                <div class="pillar-card__scrim"></div>
+                            </div>
                         <?php endif; ?>
-                        <div class="pillar-card__scrim"></div>
+                        <span class="pillar-card__num" aria-hidden="true"><?= sprintf('%02d', $i + 1) ?></span>
                         <div class="pillar-card__label">
-                            <span class="pillar-card__index">0<?= $i + 1 ?></span>
                             <p class="pillar-card__name"><?= e($pillar['name']) ?></p>
+                            <span class="pillar-card__explore">Explore <span class="pillar-card__arrow">&rarr;</span></span>
                         </div>
                     </a>
                 <?php endforeach; ?>

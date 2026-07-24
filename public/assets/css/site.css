@@ -313,69 +313,106 @@ body.inner-page .site-header {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* ---------- Pillars grid ---------- */
+/* ---------- Pillars grid (editorial numbered cards + 3D tilt) ---------- */
 .pillar-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-  background: var(--color-gray-300);
-  border: 1px solid var(--color-gray-300);
+  gap: 10px;
 }
 .pillar-card {
   position: relative;
   background: var(--color-white);
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  display: block;
+  border: 1px solid var(--color-gray-300);
+  min-height: 180px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transform-style: preserve-3d;
+  transition: border-color 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux);
+  will-change: transform;
 }
-.pillar-card__img {
+.pillar-card:hover {
+  border-color: var(--color-black);
+  box-shadow: 0 16px 34px rgba(10, 10, 10, 0.14);
+}
+
+/* Full-bleed image lives in its own clipping layer so the card can keep a
+   3D context (preserve-3d) for the layered number/label above it. */
+.pillar-card__media {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.pillar-card__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   filter: grayscale(100%);
   transform: scale(1);
-  transition: transform 0.7s var(--ease-lux), filter 0.5s var(--ease-lux);
+  transition: transform 0.8s var(--ease-lux), filter 0.6s var(--ease-lux);
 }
-.pillar-card:hover .pillar-card__img { transform: scale(1.07); filter: grayscale(30%); }
-.pillar-card__name { transition: letter-spacing 0.4s var(--ease-lux); }
-.pillar-card:hover .pillar-card__name { letter-spacing: 0.01em; }
-.pillar-card__img--placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-gray-100);
-  color: var(--color-gray-500);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+.pillar-card--image:hover .pillar-card__img { transform: scale(1.07); filter: grayscale(0%); }
 .pillar-card__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.32);
+  background: rgba(10, 10, 10, 0.44);
+  transition: background 0.45s var(--ease-lux);
 }
-.pillar-card__label {
+.pillar-card--image:hover .pillar-card__scrim { background: rgba(10, 10, 10, 0.30); }
+
+/* Large serif watermark number — floats forward on tilt */
+.pillar-card__num {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 20px 18px;
-  color: var(--color-white);
+  top: 12px; left: 18px;
   z-index: 2;
+  font-family: var(--font-serif);
+  font-size: 2.4rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-gray-300);
+  transform: translateZ(28px);
+  transition: color 0.45s var(--ease-lux);
+  pointer-events: none;
 }
-.pillar-card__index {
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  opacity: 0.75;
-  display: block;
-  margin-bottom: 6px;
+.pillar-card:hover .pillar-card__num { color: var(--color-black); }
+
+.pillar-card__label {
+  position: relative;
+  z-index: 2;
+  transform: translateZ(46px);
 }
 .pillar-card__name {
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.25;
-  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.28;
+  margin: 0 0 10px;
+  color: var(--color-black);
 }
+.pillar-card__explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gray-600);
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity 0.4s var(--ease-lux), transform 0.4s var(--ease-lux), color 0.4s var(--ease-lux);
+}
+.pillar-card:hover .pillar-card__explore { opacity: 1; transform: translateY(0); color: var(--color-black); }
+.pillar-card__arrow { transition: transform 0.4s var(--ease-lux); }
+.pillar-card:hover .pillar-card__arrow { transform: translateX(6px); }
+
+/* Image variant — invert text to white over the photo */
+.pillar-card--image .pillar-card__num { color: rgba(255, 255, 255, 0.6); }
+.pillar-card--image:hover .pillar-card__num { color: #fff; }
+.pillar-card--image .pillar-card__name { color: #fff; }
+.pillar-card--image .pillar-card__explore { color: rgba(255, 255, 255, 0.82); }
+.pillar-card--image:hover .pillar-card__explore { color: #fff; }
 
 /* ---------- Partners ---------- */
 .partners-grid {

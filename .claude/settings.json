@@ -18,7 +18,8 @@
       "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/.cpanel.yml\")",
       "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/.gitignore\")",
       "Bash(curl -s --max-time 15 -w \"\\\\nHTTP %{http_code}\\\\n\" \"https://mascardilifestyle.co.ke/ping.txt\")",
-      "PowerShell(Start-Process \"http://localhost:8083/\")"
+      "PowerShell(Start-Process \"http://localhost:8083/\")",
+      "PowerShell(Start-Process \"http://localhost:8083/#pillars\")"
     ]
   }
 }
