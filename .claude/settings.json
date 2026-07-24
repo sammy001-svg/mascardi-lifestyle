@@ -4,7 +4,19 @@
       "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/\")",
       "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/\")",
       "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/index.php\")",
-      "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/assets/css/site.css\")"
+      "Bash(curl -sI --max-time 15 \"https://mascardilifestyle.co.ke/assets/css/site.css\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} | server: %header{server}\\\\n\" --max-time 15 \"https://mascardilifestyle.co.ke/\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 15 \"https://mascardilifestyle.co.ke/index.php\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 15 \"https://mascardilifestyle.co.ke/public/\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 15 \"https://mascardilifestyle.co.ke/public/index.php\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" --max-time 15 \"https://mascardilifestyle.co.ke/assets/css/site.css\")",
+      "Bash(curl -s --max-time 12 \"https://mascardilifestyle.co.ke/config/config.php\")",
+      "Bash(curl -s --max-time 12 \"https://mascardilifestyle.co.ke/app/bootstrap.php\")",
+      "Bash(curl -s -o /dev/null -w \"server alive: %{http_code}\\\\n\" --max-time 5 http://localhost:8000/)",
+      "Read(//tmp/**)",
+      "Read(//tmp/ptest/**)",
+      "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/.cpanel.yml\")",
+      "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/.gitignore\")"
     ]
   }
 }

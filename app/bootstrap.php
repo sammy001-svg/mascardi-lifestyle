@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Core\Config;
+use App\Core\Env;
 use App\Core\Logger;
 use App\Core\Session;
 use App\Core\View;
@@ -29,6 +30,10 @@ spl_autoload_register(function (string $class): void {
 });
 
 require __DIR__ . '/helpers.php';
+
+// Environment file: lives NEXT TO the app/ folder — the project root locally,
+// or the cPanel home directory in production (never inside the web root).
+Env::load(dirname(__DIR__) . '/.env');
 
 // --- Config-driven error display: never leak stack traces in production ---
 $config = Config::get();
