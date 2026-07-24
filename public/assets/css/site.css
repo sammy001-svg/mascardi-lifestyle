@@ -747,6 +747,119 @@ body.inner-page .site-header {
   .hero__scroll-hint .line { animation: none; }
 }
 
+/* ---------- Contact page ---------- */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Info panel — dark, premium contrast */
+.contact-info {
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: 42px 38px;
+  display: flex;
+  flex-direction: column;
+}
+.contact-info__title {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin: 0 0 28px;
+}
+.contact-info__list { list-style: none; margin: 0 0 auto; padding: 0; }
+.contact-info__item {
+  padding: 18px 0;
+  border-top: 1px solid var(--color-gray-800);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contact-info__item:first-child { border-top: 0; padding-top: 0; }
+.contact-info__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+}
+.contact-info__value {
+  font-size: 1rem;
+  color: var(--color-white);
+  line-height: 1.5;
+  transition: color 0.3s var(--ease-lux);
+}
+a.contact-info__value:hover { color: var(--color-gray-300); }
+.contact-info__social { display: flex; gap: 14px; margin-top: 32px; }
+.contact-info__social a {
+  border: 1px solid var(--color-gray-800);
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  transition: border-color 0.3s var(--ease-lux), background 0.3s var(--ease-lux), color 0.3s var(--ease-lux);
+}
+.contact-info__social a:hover { background: var(--color-white); color: var(--color-black); border-color: var(--color-white); }
+
+/* Form panel */
+.contact-form-wrap {
+  border: 1px solid var(--color-gray-300);
+  padding: 42px 38px;
+}
+.contact-alert {
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  border: 1px solid;
+}
+.contact-alert--success { border-color: var(--color-black); background: var(--color-gray-050); color: var(--color-black); }
+
+/* Reusable form fields */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.field { margin-bottom: 18px; }
+.field__label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-600);
+  margin-bottom: 8px;
+}
+.field__opt { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--color-gray-500); }
+.field__input {
+  width: 100%;
+  padding: 13px 15px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--color-black);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  transition: border-color 0.3s var(--ease-lux), box-shadow 0.3s var(--ease-lux);
+}
+.field__input::placeholder { color: var(--color-gray-500); }
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 1px var(--color-black);
+}
+.field__input--error { border-color: var(--color-rose, #e11d48); }
+.field__textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+.field__error { display: block; margin-top: 6px; font-size: 0.78rem; color: #e11d48; }
+.contact-form__submit { margin-top: 8px; width: 100%; }
+
+/* Honeypot — visually removed, still in the DOM for bots */
+.contact-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.contact-map { margin-top: 24px; line-height: 0; border: 1px solid var(--color-gray-300); }
+.contact-map iframe { display: block; filter: grayscale(100%); transition: filter 0.5s var(--ease-lux); }
+.contact-map:hover iframe { filter: grayscale(0%); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
   .pillar-grid { grid-template-columns: repeat(2, 1fr); }
@@ -758,6 +871,7 @@ body.inner-page .site-header {
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
   .product-detail { grid-template-columns: 1fr; gap: 32px; }
   .event-detail { grid-template-columns: 1fr; gap: 32px; }
+  .contact-layout { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
@@ -781,6 +895,8 @@ body.inner-page .site-header {
   .shop-page-grid { grid-template-columns: 1fr 1fr; }
   .event-list-grid { grid-template-columns: 1fr; }
   .site-footer__grid { grid-template-columns: 1fr; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+  .contact-info, .contact-form-wrap { padding: 30px 24px; }
 }
 
 /* ---------- Legacy placeholder (kept for minimal branded pages, e.g. 404) ---------- */

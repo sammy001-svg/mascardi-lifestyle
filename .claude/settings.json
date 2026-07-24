@@ -19,7 +19,10 @@
       "Bash(curl -s --max-time 15 \"https://mascardilifestyle.co.ke/.gitignore\")",
       "Bash(curl -s --max-time 15 -w \"\\\\nHTTP %{http_code}\\\\n\" \"https://mascardilifestyle.co.ke/ping.txt\")",
       "PowerShell(Start-Process \"http://localhost:8083/\")",
-      "PowerShell(Start-Process \"http://localhost:8083/#pillars\")"
+      "PowerShell(Start-Process \"http://localhost:8083/#pillars\")",
+      "PowerShell(Start-Process \"http://localhost:8083/contact\")",
+      "PowerShell(Start-Process \"http://localhost:8083/admin/index.php?module=messages&action=index\")",
+      "PowerShell(Start-Process \"http://localhost:8083/admin/index.php?module=settings&action=index\")"
     ]
   }
 }

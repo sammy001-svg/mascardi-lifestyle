@@ -62,6 +62,30 @@ $s = static fn (string $key) => e($settings[$key] ?? '');
     </div>
 
     <div class="card" style="margin-bottom:20px;">
+        <div class="card__header"><h2>Contact Page</h2></div>
+        <div class="card__body">
+            <div class="form-group">
+                <label class="form-label" for="contact_heading">Page heading</label>
+                <input class="form-control" type="text" id="contact_heading" name="contact_heading" value="<?= $s('contact_heading') ?>" placeholder="Get in Touch">
+                <div class="form-hint">Shown as the main title on the public <code>/contact</code> page.</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="contact_intro">Intro text</label>
+                <textarea class="form-control" id="contact_intro" name="contact_intro" rows="2" placeholder="A short line inviting visitors to reach out."><?= $s('contact_intro') ?></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="contact_hours">Business hours</label>
+                <input class="form-control" type="text" id="contact_hours" name="contact_hours" value="<?= $s('contact_hours') ?>" placeholder="Mon – Fri, 9:00am – 6:00pm">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="contact_map_embed">Google Map embed URL</label>
+                <input class="form-control" type="url" id="contact_map_embed" name="contact_map_embed" value="<?= $s('contact_map_embed') ?>" placeholder="https://www.google.com/maps/embed?pb=...">
+                <div class="form-hint">In Google Maps: <strong>Share → Embed a map → Copy HTML</strong>, then paste only the <code>src="..."</code> URL here. Leave blank to hide the map. Phone, email &amp; address come from the <strong>Footer &amp; Contact</strong> section above.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
         <div class="card__header"><h2>Social Links</h2></div>
         <div class="card__body">
             <div class="form-row">

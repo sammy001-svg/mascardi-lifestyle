@@ -31,6 +31,13 @@ $navItem = static function (string $icon, string $label, string $module, string 
         <?php $navItem('&#127903;', 'Events', 'events', $activeModule); ?>
         <?php $navItem('&#127915;', 'Registrations', 'registrations', $activeModule); ?>
 
+        <div class="admin-nav__section">Communication</div>
+        <?php $unreadMessages = \App\Models\ContactMessage::unreadCount(); ?>
+        <a class="admin-nav__link<?= $activeModule === 'messages' ? ' is-active' : '' ?>" href="<?= admin_url('messages') ?>">
+            <span class="admin-nav__icon">&#9993;</span>Messages
+            <?php if ($unreadMessages > 0): ?><span class="badge badge-rose" style="margin-left:auto;"><?= (int) $unreadMessages ?></span><?php endif; ?>
+        </a>
+
         <div class="admin-nav__section">System</div>
         <?php $navItem('&#128247;', 'Media Library', 'media', $activeModule); ?>
         <?php $navItem('&#9881;', 'Settings', 'settings', $activeModule); ?>

@@ -8,6 +8,7 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 
 use App\Controllers\Site\CartController;
 use App\Controllers\Site\CheckoutController;
+use App\Controllers\Site\ContactController;
 use App\Controllers\Site\EventsController;
 use App\Controllers\Site\HomeController;
 use App\Controllers\Site\ShopController;
@@ -34,6 +35,10 @@ $router->post('/checkout', [$checkout, 'store']);
 $router->get('/checkout/waiting/{orderNumber}', [$checkout, 'waiting']);
 $router->post('/checkout/retry/{orderNumber}', [$checkout, 'retry']);
 $router->get('/checkout/confirmation/{orderNumber}', [$checkout, 'confirmation']);
+
+$contact = new ContactController();
+$router->get('/contact', [$contact, 'index']);
+$router->post('/contact', [$contact, 'submit']);
 
 $events = new EventsController();
 $router->get('/events', [$events, 'index']);

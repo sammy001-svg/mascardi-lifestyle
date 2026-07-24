@@ -25,6 +25,10 @@ final class SettingsController
         'social_instagram_url',
         'social_facebook_url',
         'social_linkedin_url',
+        'contact_heading',
+        'contact_intro',
+        'contact_hours',
+        'contact_map_embed',
     ];
 
     public function index(): void
