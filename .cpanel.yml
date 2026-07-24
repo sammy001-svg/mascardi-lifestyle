@@ -1,9 +1,14 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=$HOME/public_html
+    # Web root for mascardilifestyle.co.ke (addon domain document root).
+    - export DEPLOYPATH=$HOME/mascardilifestyle.co.ke
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R public/. $DEPLOYPATH/
+    # Application code/config/views live OUTSIDE the web root, as siblings
+    # in the home directory — never web-reachable. Real config/config.php and
+    # config/mpesa.php are created on the server by hand (only the .example
+    # templates are in the repo) and are never overwritten by deploys.
     - /bin/mkdir -p $HOME/app $HOME/config $HOME/database $HOME/resources $HOME/storage/logs $HOME/storage/cache
     - /bin/cp -R app/. $HOME/app/
     - /bin/cp -R config/. $HOME/config/
