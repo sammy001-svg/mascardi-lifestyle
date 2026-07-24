@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+define('PUBLIC_PATH', __DIR__);
+
 require dirname(__DIR__) . '/app/bootstrap.php';
 
 use App\Controllers\Site\CartController;

@@ -55,7 +55,7 @@ final class Uploader
         $extension = self::ALLOWED[$mime];
         $filename = bin2hex(random_bytes(16)) . '.' . $extension;
 
-        $uploadsRoot = dirname(__DIR__, 2) . '/public/uploads';
+        $uploadsRoot = PUBLIC_PATH . '/uploads';
         $targetDir = $uploadsRoot . '/' . trim($subdir, '/');
         if (!is_dir($targetDir)) {
             mkdir($targetDir, 0755, true);
@@ -97,7 +97,7 @@ final class Uploader
         if (!$relativePath) {
             return;
         }
-        $fullPath = dirname(__DIR__, 2) . '/public/uploads/' . ltrim($relativePath, '/');
+        $fullPath = PUBLIC_PATH . '/uploads/' . ltrim($relativePath, '/');
         if (is_file($fullPath)) {
             @unlink($fullPath);
         }

@@ -7,6 +7,14 @@ use App\Core\Logger;
 use App\Core\Session;
 use App\Core\View;
 
+// Web-root location. Each front controller defines this from its own real
+// directory before requiring bootstrap, so it stays correct whether the web
+// root is named public/ (local dev) or public_html (cPanel). This fallback
+// only applies to CLI scripts/tools that bypass a front controller.
+if (!defined('PUBLIC_PATH')) {
+    define('PUBLIC_PATH', dirname(__DIR__) . '/public');
+}
+
 // --- Simple PSR-4-ish autoloader for the App\ namespace (no Composer needed at runtime) ---
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';

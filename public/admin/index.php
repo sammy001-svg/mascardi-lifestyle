@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+define('PUBLIC_PATH', dirname(__DIR__));
+
 require dirname(__DIR__, 2) . '/app/bootstrap.php';
 
 use App\Core\Auth;
