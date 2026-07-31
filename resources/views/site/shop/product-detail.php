@@ -43,15 +43,15 @@ $mainImage = $images[0]['image_path'] ?? null;
                 <p class="product-detail__stock"><?= $inStock ? (int) $product['stock_quantity'] . ' in stock' : 'Out of stock' ?></p>
 
                 <?php if ($inStock): ?>
-                    <form method="post" action="<?= site_url('cart/add') ?>" style="display:flex;gap:12px;">
+                    <form method="post" action="<?= site_url('cart/add') ?>" class="buy-form">
                         <?= csrf_field() ?>
                         <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
                         <input type="hidden" name="redirect_to" value="<?= site_url('cart') ?>">
-                        <input type="number" name="quantity" value="1" min="1" max="<?= (int) $product['stock_quantity'] ?>" style="width:80px;padding:13px;border:1px solid var(--color-gray-300);text-align:center;">
-                        <button type="submit" class="btn btn-dark" style="flex:1;">Add to Cart</button>
+                        <input class="qty-input" type="number" name="quantity" value="1" min="1" max="<?= (int) $product['stock_quantity'] ?>">
+                        <button type="submit" class="btn btn-dark btn--grow">Add to Cart</button>
                     </form>
                 <?php else: ?>
-                    <button type="button" class="btn btn-dark" style="opacity:0.4;cursor:not-allowed;" disabled>Out of Stock</button>
+                    <button type="button" class="btn btn-dark btn--disabled" disabled>Out of Stock</button>
                 <?php endif; ?>
             </div>
         </div>

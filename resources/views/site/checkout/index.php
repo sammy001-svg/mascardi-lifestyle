@@ -8,24 +8,24 @@ use App\Core\View;
 <?= View::renderPartial('partials/site/header', ['settings' => $settings]) ?>
 
 <section class="section section--offset-header">
-    <div class="container" style="max-width:640px;">
-        <div class="section-head" style="text-align:left;margin-left:0;margin-bottom:32px;">
+    <div class="container container--form">
+        <div class="section-head section-head--left" style="margin-bottom:32px;">
             <span class="section-head__eyebrow">Checkout</span>
             <h1 class="section-head__title">Complete Your Order</h1>
         </div>
 
         <?php if ($err = field_errors('name') ?: field_errors('phone') ?: field_errors('email')): ?>
-            <p style="border:1px solid var(--color-black);padding:14px 18px;margin-bottom:24px;"><?= e($err[0]) ?></p>
+            <div class="alert alert--error"><?= e($err[0]) ?></div>
         <?php endif; ?>
 
-        <div style="border:1px solid var(--color-gray-300);padding:20px;margin-bottom:32px;">
+        <div class="order-summary">
             <?php foreach ($items as $item): ?>
-                <div style="display:flex;justify-content:space-between;font-size:0.88rem;margin-bottom:10px;">
+                <div class="order-summary__row">
                     <span><?= (int) $item['quantity'] ?> &times; <?= e($item['product']['name']) ?></span>
                     <span><?= e(Money::format((int) $item['line_total_cents'])) ?></span>
                 </div>
             <?php endforeach; ?>
-            <div style="display:flex;justify-content:space-between;font-weight:700;padding-top:12px;border-top:1px solid var(--color-gray-300);">
+            <div class="order-summary__total">
                 <span>Total</span>
                 <span><?= e(Money::format($subtotalCents)) ?></span>
             </div>
@@ -33,24 +33,24 @@ use App\Core\View;
 
         <form method="post" action="<?= site_url('checkout') ?>">
             <?= csrf_field() ?>
-            <div class="form-group" style="margin-bottom:18px;">
-                <label style="display:block;font-size:0.82rem;font-weight:700;margin-bottom:6px;" for="name">Full name</label>
-                <input style="width:100%;padding:13px;border:1px solid var(--color-gray-300);" type="text" id="name" name="name" value="<?= old('name') ?>" required>
+            <div class="field">
+                <label class="field__label" for="name">Full name</label>
+                <input class="field__input" type="text" id="name" name="name" value="<?= old('name') ?>" required>
             </div>
-            <div class="form-group" style="margin-bottom:18px;">
-                <label style="display:block;font-size:0.82rem;font-weight:700;margin-bottom:6px;" for="phone">M-Pesa phone number</label>
-                <input style="width:100%;padding:13px;border:1px solid var(--color-gray-300);" type="tel" id="phone" name="phone" value="<?= old('phone') ?>" placeholder="07XX XXX XXX" required>
-                <p style="font-size:0.78rem;color:var(--color-gray-600);margin-top:6px;">You'll receive an M-Pesa prompt on this number to complete payment.</p>
+            <div class="field">
+                <label class="field__label" for="phone">M-Pesa phone number</label>
+                <input class="field__input" type="tel" id="phone" name="phone" value="<?= old('phone') ?>" placeholder="07XX XXX XXX" required>
+                <p class="field__hint">You'll receive an M-Pesa prompt on this number to complete payment.</p>
             </div>
-            <div class="form-group" style="margin-bottom:18px;">
-                <label style="display:block;font-size:0.82rem;font-weight:700;margin-bottom:6px;" for="email">Email <span style="font-weight:400;color:var(--color-gray-600);">(optional)</span></label>
-                <input style="width:100%;padding:13px;border:1px solid var(--color-gray-300);" type="email" id="email" name="email" value="<?= old('email') ?>">
+            <div class="field">
+                <label class="field__label" for="email">Email <span class="field__opt">(optional)</span></label>
+                <input class="field__input" type="email" id="email" name="email" value="<?= old('email') ?>">
             </div>
-            <div class="form-group" style="margin-bottom:28px;">
-                <label style="display:block;font-size:0.82rem;font-weight:700;margin-bottom:6px;" for="delivery_notes">Delivery notes <span style="font-weight:400;color:var(--color-gray-600);">(optional)</span></label>
-                <textarea style="width:100%;padding:13px;border:1px solid var(--color-gray-300);min-height:80px;" id="delivery_notes" name="delivery_notes"><?= old('delivery_notes') ?></textarea>
+            <div class="field">
+                <label class="field__label" for="delivery_notes">Delivery notes <span class="field__opt">(optional)</span></label>
+                <textarea class="field__input field__textarea" id="delivery_notes" name="delivery_notes" style="min-height:90px;"><?= old('delivery_notes') ?></textarea>
             </div>
-            <button type="submit" class="btn btn-dark" style="width:100%;">Pay with M-Pesa</button>
+            <button type="submit" class="btn btn-dark btn--block" style="margin-top:8px;">Pay with M-Pesa</button>
         </form>
     </div>
 </section>
