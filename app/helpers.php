@@ -12,7 +12,13 @@ function e(mixed $value): string
 
 function asset(string $path): string
 {
-    return '/assets/' . ltrim($path, '/');
+    $rel = ltrim($path, '/');
+    // Append the file's modification time as a version so we can cache assets
+    // aggressively (see public/.htaccess) while a redeploy busts the cache
+    // automatically. Falls back to an unversioned URL if the file is missing.
+    $base = defined('PUBLIC_PATH') ? PUBLIC_PATH : dirname(__DIR__) . '/public';
+    $mtime = @filemtime($base . '/assets/' . $rel);
+    return '/assets/' . $rel . ($mtime ? '?v=' . $mtime : '');
 }
 
 function upload_url(?string $path): ?string

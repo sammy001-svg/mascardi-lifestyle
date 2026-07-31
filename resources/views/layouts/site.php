@@ -11,8 +11,8 @@
 </head>
 <body class="site-body<?= !empty($bodyClass) ? ' ' . e($bodyClass) : '' ?>">
 <?= $content ?>
-<script src="/assets/vendor/aos/aos.js"></script>
-<script src="/assets/vendor/vanilla-tilt/vanilla-tilt.min.js"></script>
-<script src="<?= asset('js/site.js') ?>"></script>
+<script defer src="/assets/vendor/aos/aos.js"></script>
+<script defer src="/assets/vendor/vanilla-tilt/vanilla-tilt.min.js"></script>
+<script defer src="<?= asset('js/site.js') ?>"></script>
 </body>
 </html>

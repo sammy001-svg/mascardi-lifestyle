@@ -266,4 +266,14 @@ CREATE TABLE IF NOT EXISTS activity_log (
     CONSTRAINT fk_activity_log_admin FOREIGN KEY (admin_user_id) REFERENCES admin_users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- ---------------------------------------------------------------------
+-- Performance indexes — cover the columns the admin lists filter/sort by.
+-- Idempotent (IF NOT EXISTS) so this file stays safe to re-run.
+-- ---------------------------------------------------------------------
+ALTER TABLE orders ADD INDEX IF NOT EXISTS idx_orders_status_created (status, created_at);
+ALTER TABLE products ADD INDEX IF NOT EXISTS idx_products_active_featured_created (is_active, is_featured, created_at);
+ALTER TABLE event_registrations ADD INDEX IF NOT EXISTS idx_event_regs_created (created_at);
+ALTER TABLE media_uploads ADD INDEX IF NOT EXISTS idx_media_created (created_at);
+ALTER TABLE activity_log ADD INDEX IF NOT EXISTS idx_activity_created (created_at);
+
 SET FOREIGN_KEY_CHECKS = 1;
