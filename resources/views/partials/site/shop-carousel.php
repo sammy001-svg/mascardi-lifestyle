@@ -2,7 +2,7 @@
 /** @var array $products */
 use App\Core\View;
 
-$pages = array_chunk($products, 8);
+$pages = array_chunk($products, 10);
 ?>
 <section class="section" id="shop">
     <div class="container">
@@ -18,9 +18,9 @@ $pages = array_chunk($products, 8);
             <div class="shop-carousel" data-aos="fade-up">
                 <div class="shop-carousel__track" id="shopCarouselTrack">
                     <?php foreach ($pages as $page): ?>
-                        <div class="shop-carousel__page">
+                        <div class="shop-carousel__page shop-carousel__page--compact">
                             <?php foreach ($page as $product): ?>
-                                <?= View::renderPartial('partials/site/product-card', ['product' => $product]) ?>
+                                <?= View::renderPartial('partials/site/product-card', ['product' => $product, 'compact' => true]) ?>
                             <?php endforeach; ?>
                         </div>
                     <?php endforeach; ?>

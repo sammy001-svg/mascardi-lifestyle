@@ -1,7 +1,7 @@
 <?php /** @var array $settings */ ?>
 <header class="site-header" id="siteHeader">
     <div class="container site-header__inner">
-        <a href="#top" class="site-header__logo"><?= e($settings['site_name'] ?? 'Mascardi Lifestyle') ?></a>
+        <a href="<?= site_url() ?>" class="site-header__logo"><?= e($settings['site_name'] ?? 'Mascardi Lifestyle') ?></a>
         <nav class="site-header__nav" id="siteNav">
             <a href="<?= site_url() ?>#pillars">Pillars</a>
             <a href="<?= site_url() ?>#partners">Partners</a>

@@ -1,9 +1,11 @@
 <?php
 /** @var array $product */
+/** @var bool $compact */
 use App\Core\Money;
 $inStock = (int) $product['stock_quantity'] > 0;
+$compact = $compact ?? false;
 ?>
-<div class="product-card js-tilt">
+<div class="product-card js-tilt<?= $compact ? ' product-card--compact' : '' ?>">
     <a href="<?= site_url('shop/' . $product['slug']) ?>" class="product-card__media">
         <?php if (!empty($product['primary_image'])): ?>
             <img class="product-card__img" src="<?= e(upload_url($product['primary_image'])) ?>" alt="<?= e($product['name']) ?>" loading="lazy">
