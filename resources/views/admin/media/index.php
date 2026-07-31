@@ -19,7 +19,7 @@ use App\Core\View;
             <div class="form-group" style="flex:1;min-width:240px;margin-bottom:0;">
                 <label class="form-label" for="images">Upload new images</label>
                 <input class="form-control" type="file" id="images" name="images[]" accept="image/png,image/jpeg,image/webp" multiple>
-                <div class="form-hint">JPEG, PNG, or WEBP, up to 5MB each.</div>
+                <div class="form-hint">JPEG, PNG, or WEBP, up to 15MB each.</div>
             </div>
             <button type="submit" class="btn btn-primary">Upload</button>
         </form>

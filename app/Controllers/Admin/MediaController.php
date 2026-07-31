@@ -41,12 +41,13 @@ final class MediaController
     {
         $adminId = Auth::user()['id'] ?? null;
         $stored = 0;
+        $lastError = null;
         foreach (Request::normalizeFiles('images') as $file) {
             try {
                 Uploader::storeImage($file, 'library', $adminId);
                 $stored++;
-            } catch (\RuntimeException) {
-                continue;
+            } catch (\RuntimeException $e) {
+                $lastError = $e->getMessage();
             }
         }
 
@@ -54,7 +55,14 @@ final class MediaController
             ActivityLog::record($adminId, 'media.upload', 'media_upload', null, "{$stored} file(s)");
         }
 
-        Session::flash($stored > 0 ? 'success' : 'error', $stored > 0 ? "{$stored} file(s) uploaded." : 'No valid files were uploaded.');
+        if ($stored > 0 && $lastError !== null) {
+            Session::flash('success', "{$stored} file(s) uploaded. Some were skipped: {$lastError}");
+        } elseif ($stored > 0) {
+            Session::flash('success', "{$stored} file(s) uploaded.");
+        } else {
+            Session::flash('error', $lastError ?? 'No valid files were uploaded.');
+        }
+
         Response::redirect(admin_url('media'));
     }
 
