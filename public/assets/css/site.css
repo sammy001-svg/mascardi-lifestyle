@@ -232,6 +232,32 @@ body.inner-page .site-header {
   cursor: pointer;
 }
 
+.site-header__actions { display: flex; align-items: center; gap: 16px; }
+.site-header__cart {
+  color: var(--color-white);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: opacity 0.2s ease;
+}
+.site-header__cart:hover { opacity: 0.7; }
+.site-header__cart-count {
+  background: var(--color-white);
+  color: var(--color-black);
+  font-size: 0.66rem;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ---------- Hero ---------- */
 .hero {
   position: relative;

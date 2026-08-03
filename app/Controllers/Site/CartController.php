@@ -34,7 +34,8 @@ final class CartController
             Session::flash('success', 'Added to your cart.');
         }
 
-        Response::redirect((string) Request::input('redirect_to', site_url('shop')));
+        // Send the shopper straight to the cart so the path to checkout is clear.
+        Response::redirect(site_url('cart'));
     }
 
     public function update(): void
