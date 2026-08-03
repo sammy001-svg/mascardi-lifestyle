@@ -38,7 +38,7 @@ final class PillarsController
 
     public function store(): void
     {
-        [$data, $errors] = $this->validate(Request::all(['name', 'slug', 'description', 'link_url', 'sort_order']));
+        [$data, $errors] = $this->validate(Request::all(['name', 'slug', 'description', 'body', 'link_url', 'sort_order']));
 
         if ($errors) {
             redirect_with_errors(admin_url('pillars', 'create'), $errors, $_POST);
@@ -96,7 +96,7 @@ final class PillarsController
             Response::notFound();
         }
 
-        [$data, $errors] = $this->validate(Request::all(['name', 'slug', 'description', 'link_url', 'sort_order']));
+        [$data, $errors] = $this->validate(Request::all(['name', 'slug', 'description', 'body', 'link_url', 'sort_order']));
 
         if ($errors) {
             redirect_with_errors(admin_url('pillars', 'edit', ['id' => $id]), $errors, $_POST);

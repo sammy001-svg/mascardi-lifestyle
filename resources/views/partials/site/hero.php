@@ -34,6 +34,7 @@ $embedParams = http_build_query([
         <div class="hero__eyebrow" data-aos="fade-up">Mascardi Lifestyle</div>
         <h1 class="hero__title" data-aos="fade-up" data-aos-delay="120"><?= e($overlayText) ?></h1>
         <div class="hero__actions" data-aos="fade-up" data-aos-delay="240">
+            <a href="http://mascardisystems.co.ke/showroom/vehicles.php" target="_blank" rel="noopener" class="btn btn-solid-light">Explore Mascardi Cars</a>
             <a href="#pillars" class="btn btn-light">Discover the Pillars</a>
         </div>
     </div>

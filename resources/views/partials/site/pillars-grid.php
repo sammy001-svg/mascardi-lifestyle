@@ -14,7 +14,7 @@
                 <?php foreach ($pillars as $i => $pillar): ?>
                     <?php $hasImage = !empty($pillar['image_path']); ?>
                     <a class="pillar-card js-tilt<?= $hasImage ? ' pillar-card--image' : '' ?>"
-                       href="<?= e($pillar['link_url'] ?: '#pillars') ?>"
+                       href="<?= e(site_url('pillars/' . $pillar['slug'])) ?>"
                        data-aos="fade-up" data-aos-delay="<?= ($i % 4) * 90 ?>"
                        data-tilt-max="10" data-tilt-speed="500" data-tilt-scale="1.03"
                        data-tilt-glare="true" data-tilt-max-glare="0.18">

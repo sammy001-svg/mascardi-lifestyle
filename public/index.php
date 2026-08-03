@@ -11,6 +11,7 @@ use App\Controllers\Site\CheckoutController;
 use App\Controllers\Site\ContactController;
 use App\Controllers\Site\EventsController;
 use App\Controllers\Site\HomeController;
+use App\Controllers\Site\PillarsController;
 use App\Controllers\Site\ShopController;
 use App\Core\Request;
 use App\Core\Router;
@@ -18,6 +19,9 @@ use App\Core\Router;
 $router = new Router();
 
 $router->get('/', [new HomeController(), 'index']);
+
+$pillars = new PillarsController();
+$router->get('/pillars/{slug}', [$pillars, 'show']);
 
 $shop = new ShopController();
 $router->get('/shop', [$shop, 'index']);

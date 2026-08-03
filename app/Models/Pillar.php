@@ -25,6 +25,18 @@ final class Pillar
         return $stmt->fetch() ?: null;
     }
 
+    public static function findBySlug(string $slug, bool $activeOnly = true): ?array
+    {
+        $sql = 'SELECT * FROM pillars WHERE slug = :slug';
+        if ($activeOnly) {
+            $sql .= ' AND is_active = 1';
+        }
+        $sql .= ' LIMIT 1';
+        $stmt = Database::connection()->prepare($sql);
+        $stmt->execute(['slug' => $slug]);
+        return $stmt->fetch() ?: null;
+    }
+
     public static function slugExists(string $slug, ?int $excludeId = null): bool
     {
         $sql = 'SELECT COUNT(*) FROM pillars WHERE slug = :slug';
@@ -42,13 +54,14 @@ final class Pillar
     {
         $pdo = Database::connection();
         $stmt = $pdo->prepare(
-            'INSERT INTO pillars (slug, name, description, image_path, link_url, sort_order, is_active)
-             VALUES (:slug, :name, :description, :image_path, :link_url, :sort_order, :is_active)'
+            'INSERT INTO pillars (slug, name, description, body, image_path, link_url, sort_order, is_active)
+             VALUES (:slug, :name, :description, :body, :image_path, :link_url, :sort_order, :is_active)'
         );
         $stmt->execute([
             'slug' => $data['slug'],
             'name' => $data['name'],
             'description' => $data['description'] ?: null,
+            'body' => $data['body'] ?: null,
             'image_path' => $data['image_path'] ?: null,
             'link_url' => $data['link_url'] ?: null,
             'sort_order' => $data['sort_order'] ?? 0,
@@ -59,12 +72,13 @@ final class Pillar
 
     public static function update(int $id, array $data): void
     {
-        $sql = 'UPDATE pillars SET slug = :slug, name = :name, description = :description,
+        $sql = 'UPDATE pillars SET slug = :slug, name = :name, description = :description, body = :body,
                 link_url = :link_url, sort_order = :sort_order, is_active = :is_active';
         $params = [
             'slug' => $data['slug'],
             'name' => $data['name'],
             'description' => $data['description'] ?: null,
+            'body' => $data['body'] ?: null,
             'link_url' => $data['link_url'] ?: null,
             'sort_order' => $data['sort_order'] ?? 0,
             'is_active' => $data['is_active'] ?? 1,

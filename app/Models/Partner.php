@@ -25,6 +25,18 @@ final class Partner
         return $stmt->fetch() ?: null;
     }
 
+    public static function forPillar(int $pillarId, bool $activeOnly = true): array
+    {
+        $sql = 'SELECT * FROM partners WHERE pillar_id = :pillar_id';
+        if ($activeOnly) {
+            $sql .= ' AND is_active = 1';
+        }
+        $sql .= ' ORDER BY sort_order ASC, name ASC';
+        $stmt = Database::connection()->prepare($sql);
+        $stmt->execute(['pillar_id' => $pillarId]);
+        return $stmt->fetchAll();
+    }
+
     public static function create(array $data): int
     {
         $pdo = Database::connection();

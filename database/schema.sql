@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS pillars (
     slug VARCHAR(120) NOT NULL UNIQUE,
     name VARCHAR(150) NOT NULL,
     description TEXT NULL,
+    body TEXT NULL,
     image_path VARCHAR(255) NULL,
     link_url VARCHAR(255) NULL,
     sort_order INT NOT NULL DEFAULT 0,

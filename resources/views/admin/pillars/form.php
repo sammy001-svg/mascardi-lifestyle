@@ -14,9 +14,12 @@ $val = static function (string $key, $default = '') use ($pillar, $isEdit) {
 <div class="page-header">
     <div>
         <h1><?= $isEdit ? 'Edit Pillar' : 'Add Pillar' ?></h1>
-        <p>Content shown in the homepage pillar grid.</p>
+        <p>Shown in the homepage grid and on the pillar's own page (<code>/pillars/<?= e($isEdit ? $pillar['slug'] : 'slug') ?></code>).</p>
     </div>
-    <a href="<?= admin_url('pillars') ?>" class="btn btn-outline">&larr; Back to Pillars</a>
+    <div style="display:flex;gap:8px;">
+        <?php if ($isEdit): ?><a href="<?= site_url('pillars/' . $pillar['slug']) ?>" target="_blank" class="btn btn-outline">View page &#8599;</a><?php endif; ?>
+        <a href="<?= admin_url('pillars') ?>" class="btn btn-outline">&larr; Back to Pillars</a>
+    </div>
 </div>
 
 <div class="card">
@@ -38,8 +41,15 @@ $val = static function (string $key, $default = '') use ($pillar, $isEdit) {
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" id="description" name="description"><?= e($val('description')) ?></textarea>
+                <label class="form-label" for="description">Intro / summary</label>
+                <textarea class="form-control" id="description" name="description" rows="2"><?= e($val('description')) ?></textarea>
+                <div class="form-hint">Short line shown under the pillar name on its page.</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="body">Full page content</label>
+                <textarea class="form-control" id="body" name="body" rows="10"><?= e($val('body')) ?></textarea>
+                <div class="form-hint">The main text on the pillar's page. Separate paragraphs with a blank line.</div>
             </div>
 
             <div class="form-row">
