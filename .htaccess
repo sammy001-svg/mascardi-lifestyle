@@ -1,0 +1,18 @@
+# Root-level fallback for deployments where the ENTIRE repo lands in the web
+# root (public/ ends up as a subfolder instead of being the document root).
+# It routes every request into public/ (where index.php lives) and blocks
+# direct web access to application internals.
+#
+# When the server is configured correctly (public/ IS the document root), this
+# file sits one level above the web root and is simply never read — so it is
+# safe to keep in the repo permanently.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never expose source, config, or data folders to the web.
+    RewriteRule ^(app|config|database|resources|storage|\.git)(/|$) - [F,L]
+
+    # Send everything else into the public/ web root.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
