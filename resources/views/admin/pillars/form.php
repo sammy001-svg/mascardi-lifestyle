@@ -73,7 +73,7 @@ $val = static function (string $key, $default = '') use ($pillar, $isEdit) {
                 <div>
                     <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="single" style="margin-top:8px;">Choose from Library</button>
                 </div>
-                <div class="form-hint">JPEG, PNG, or WEBP, up to 15MB. <?= $isEdit ? 'Leave blank to keep the current image.' : '' ?></div>
+                <div class="form-hint">JPEG, PNG, or WEBP, up to 30MB. <?= $isEdit ? 'Leave blank to keep the current image.' : '' ?></div>
                 <?php if ($err = field_errors('image')): ?><div class="form-error"><?= e($err[0]) ?></div><?php endif; ?>
             </div>
 

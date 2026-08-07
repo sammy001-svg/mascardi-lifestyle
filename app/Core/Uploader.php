@@ -17,7 +17,7 @@ use App\Models\MediaUpload;
  */
 final class Uploader
 {
-    private const MAX_BYTES = 15 * 1024 * 1024; // 15MB
+    private const MAX_BYTES = 30 * 1024 * 1024; // 30MB
 
     /** Images larger than this on the long edge are downscaled on upload. */
     private const MAX_DIMENSION = 2400;
@@ -39,7 +39,7 @@ final class Uploader
         }
 
         if ($file['size'] > self::MAX_BYTES) {
-            throw new \RuntimeException('Image must be smaller than 15MB.');
+            throw new \RuntimeException('Image must be smaller than 30MB.');
         }
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -197,7 +197,7 @@ final class Uploader
     private static function uploadErrorMessage(int $error): string
     {
         return match ($error) {
-            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'That image is too large for the server to accept. Please upload one under 15MB.',
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'That image is too large for the server to accept. Please upload one under 30MB.',
             UPLOAD_ERR_PARTIAL => 'The upload was interrupted. Please try again.',
             default => 'Upload failed. Please try again.',
         };
