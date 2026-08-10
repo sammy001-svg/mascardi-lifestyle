@@ -67,7 +67,7 @@ $val = static function (string $key, $default = '') use ($partner, $isEdit) {
                 <div>
                     <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="single" style="margin-top:8px;">Choose from Library</button>
                 </div>
-                <div class="form-hint">JPEG, PNG, or WEBP, up to 30MB. <?= $isEdit ? 'Leave blank to keep the current logo.' : '' ?></div>
+                <div class="form-hint">JPEG, PNG, or WEBP, up to 50MB. <?= $isEdit ? 'Leave blank to keep the current logo.' : '' ?></div>
                 <?php if ($err = field_errors('logo')): ?><div class="form-error"><?= e($err[0]) ?></div><?php endif; ?>
             </div>
 

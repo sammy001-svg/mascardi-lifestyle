@@ -101,7 +101,7 @@ $compareVal = $isEdit && !has_field_error('compare_at_price') && old('compare_at
             <div class="form-group js-media-field">
                 <label class="form-label" for="images">Add photos</label>
                 <input class="form-control" type="file" id="images" name="images[]" accept="image/png,image/jpeg,image/webp" multiple>
-                <div class="form-hint">JPEG, PNG, or WEBP, up to 30MB each. The first photo uploaded becomes the primary image.</div>
+                <div class="form-hint">JPEG, PNG, or WEBP, up to 50MB each. The first photo uploaded becomes the primary image.</div>
                 <div class="js-picked-list" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
                 <button type="button" class="btn btn-outline btn-sm js-open-media-picker" data-picker-mode="multi" style="margin-top:8px;">Add from Library</button>
             </div>
