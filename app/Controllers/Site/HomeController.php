@@ -21,7 +21,7 @@ final class HomeController
             'pillars' => Pillar::all(true),
             'partners' => Partner::all(true),
             'products' => Product::featured(16),
-            'events' => Event::upcoming(3),
+            'events' => Event::recent(6),
         ], 'site');
     }
 }

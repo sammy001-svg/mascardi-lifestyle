@@ -25,7 +25,7 @@ final class EventsController
             'pageTitle' => 'Events — Mascardi Lifestyle',
             'bodyClass' => 'inner-page',
             'settings' => Setting::all(),
-            'events' => Event::upcoming(50),
+            'events' => Event::recent(50),
         ], 'site');
     }
 

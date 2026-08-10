@@ -29,6 +29,26 @@ final class Event
         return $stmt->fetchAll();
     }
 
+    /**
+     * Events for public display — upcoming ones first (soonest first), then
+     * past ones as highlights (most recent first). Includes past events so
+     * admins can showcase what already happened.
+     */
+    public static function recent(int $limit = 6): array
+    {
+        $stmt = Database::connection()->prepare(
+            'SELECT * FROM events
+             WHERE is_active = 1
+             ORDER BY (starts_at >= NOW()) DESC,
+                      CASE WHEN starts_at >= NOW() THEN starts_at END ASC,
+                      starts_at DESC
+             LIMIT :limit'
+        );
+        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public static function find(int $id): ?array
     {
         $stmt = Database::connection()->prepare('SELECT * FROM events WHERE id = :id LIMIT 1');
