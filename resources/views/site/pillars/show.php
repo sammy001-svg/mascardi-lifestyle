@@ -7,6 +7,10 @@ use App\Core\View;
 
 $hasImage = !empty($pillar['image_path']);
 $eyebrow = $index > 0 ? sprintf('Pillar %02d', $index) : 'Pillar';
+// Null-coalesced so the page still renders on a database that predates the
+// `body` column (before its migration has been applied).
+$intro = trim((string) ($pillar['description'] ?? ''));
+$body = trim((string) ($pillar['body'] ?? ''));
 ?>
 <?= View::renderPartial('partials/site/header', ['settings' => $settings]) ?>
 
@@ -18,17 +22,17 @@ $eyebrow = $index > 0 ? sprintf('Pillar %02d', $index) : 'Pillar';
     <div class="container pillar-hero__inner">
         <span class="pillar-hero__eyebrow"><?= e($eyebrow) ?></span>
         <h1 class="pillar-hero__title"><?= e($pillar['name']) ?></h1>
-        <?php if (!empty($pillar['description'])): ?>
-            <p class="pillar-hero__intro"><?= e($pillar['description']) ?></p>
+        <?php if ($intro !== ''): ?>
+            <p class="pillar-hero__intro"><?= e($intro) ?></p>
         <?php endif; ?>
     </div>
 </section>
 
 <section class="section">
     <div class="container container--readable">
-        <?php if (!empty(trim((string) $pillar['body']))): ?>
+        <?php if ($body !== ''): ?>
             <div class="pillar-body">
-                <?php foreach (preg_split('/\n\s*\n/', trim($pillar['body'])) as $para): ?>
+                <?php foreach (preg_split('/\n\s*\n/', $body) as $para): ?>
                     <?php if (trim($para) !== ''): ?><p><?= nl2br(e(trim($para))) ?></p><?php endif; ?>
                 <?php endforeach; ?>
             </div>
