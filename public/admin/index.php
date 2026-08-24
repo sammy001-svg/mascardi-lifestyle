@@ -21,9 +21,12 @@ $moduleMap = [
     'orders' => \App\Controllers\Admin\OrdersController::class,
     'events' => \App\Controllers\Admin\EventsController::class,
     'registrations' => \App\Controllers\Admin\RegistrationsController::class,
-    'messages' => \App\Controllers\Admin\MessagesController::class,
-    'media' => \App\Controllers\Admin\MediaController::class,
-    'settings' => \App\Controllers\Admin\SettingsController::class,
+    'messages'          => \App\Controllers\Admin\MessagesController::class,
+    'media'             => \App\Controllers\Admin\MediaController::class,
+    'settings'          => \App\Controllers\Admin\SettingsController::class,
+    'blog-categories'   => \App\Controllers\Admin\BlogCategoriesController::class,
+    'blog-posts'        => \App\Controllers\Admin\BlogPostsController::class,
+    'gallery'           => \App\Controllers\Admin\GalleryAlbumsController::class,
 ];
 
 $module = Request::query('module', 'dashboard');

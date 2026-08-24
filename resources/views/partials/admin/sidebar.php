@@ -23,6 +23,13 @@ $navItem = static function (string $icon, string $label, string $module, string 
         <?php $navItem('&#9635;', 'Pillars', 'pillars', $activeModule); ?>
         <?php $navItem('&#9670;', 'Partners', 'partners', $activeModule); ?>
 
+        <div class="admin-nav__section">Blog</div>
+        <?php $navItem('&#9998;', 'Posts', 'blog-posts', $activeModule); ?>
+        <?php $navItem('&#128214;', 'Categories', 'blog-categories', $activeModule); ?>
+
+        <div class="admin-nav__section">Gallery</div>
+        <?php $navItem('&#128247;', 'Albums', 'gallery', $activeModule); ?>
+
         <div class="admin-nav__section">Commerce</div>
         <?php $navItem('&#128722;', 'Products', 'products', $activeModule); ?>
         <?php $navItem('&#128179;', 'Orders', 'orders', $activeModule); ?>
