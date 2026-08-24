@@ -8,6 +8,8 @@
             <a href="<?= site_url() ?>#partners">Partners</a>
             <a href="<?= site_url('shop') ?>">Shop</a>
             <a href="<?= site_url('events') ?>">Events</a>
+            <a href="<?= site_url('blog') ?>">Blog</a>
+            <a href="<?= site_url('gallery') ?>">Gallery</a>
             <a href="<?= site_url('contact') ?>">Contact</a>
         </nav>
         <div class="site-header__actions">

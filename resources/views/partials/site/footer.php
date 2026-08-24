@@ -13,6 +13,8 @@
                     <li><a href="<?= site_url() ?>#partners">Partners</a></li>
                     <li><a href="<?= site_url('shop') ?>">Shop Mascardi</a></li>
                     <li><a href="<?= site_url('events') ?>">Events</a></li>
+                    <li><a href="<?= site_url('blog') ?>">Blog</a></li>
+                    <li><a href="<?= site_url('gallery') ?>">Gallery</a></li>
                     <li><a href="<?= site_url('contact') ?>">Contact</a></li>
                 </ul>
             </div>

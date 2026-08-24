@@ -6,10 +6,12 @@ define('PUBLIC_PATH', __DIR__);
 
 require dirname(__DIR__) . '/app/bootstrap.php';
 
+use App\Controllers\Site\BlogController;
 use App\Controllers\Site\CartController;
 use App\Controllers\Site\CheckoutController;
 use App\Controllers\Site\ContactController;
 use App\Controllers\Site\EventsController;
+use App\Controllers\Site\GalleryController;
 use App\Controllers\Site\HomeController;
 use App\Controllers\Site\PillarsController;
 use App\Controllers\Site\ShopController;
@@ -51,5 +53,13 @@ $router->post('/events/retry/{ticketCode}', [$events, 'retry']);
 $router->get('/events/confirmation/{ticketCode}', [$events, 'confirmation']);
 $router->get('/events/{slug}', [$events, 'show']);
 $router->post('/events/{slug}/register', [$events, 'register']);
+
+$blog = new BlogController();
+$router->get('/blog', [$blog, 'index']);
+$router->get('/blog/{slug}', [$blog, 'show']);
+
+$gallery = new GalleryController();
+$router->get('/gallery', [$gallery, 'index']);
+$router->get('/gallery/{slug}', [$gallery, 'show']);
 
 $router->dispatch(Request::method(), Request::path());
