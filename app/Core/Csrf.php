@@ -36,6 +36,20 @@ final class Csrf
 
     public static function verifyRequestOrFail(): void
     {
+        // When an upload exceeds post_max_size, PHP discards the ENTIRE POST body
+        // — $_POST and $_FILES both come back empty even though data was sent.
+        // That otherwise surfaces as a misleading "session expired" CSRF error,
+        // so detect it and report the real cause: the upload was too large.
+        if (
+            ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST'
+            && empty($_POST) && empty($_FILES)
+            && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0
+        ) {
+            http_response_code(413);
+            Logger::warning('POST exceeded post_max_size (' . ini_get('post_max_size') . ') for ' . ($_SERVER['REQUEST_URI'] ?? 'unknown'));
+            exit('Your upload was too large. The combined size of the selected images exceeded the server limit — please upload fewer or smaller images at a time.');
+        }
+
         $token = $_POST['_csrf'] ?? null;
 
         if (!self::verify($token)) {
