@@ -453,14 +453,15 @@ body.inner-page .site-header {
 }
 .partner-tile {
   background: var(--color-white);
-  height: 120px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 28px 24px;
 }
 .partner-tile img {
-  max-height: 46px;
+  max-height: 130px;
+  max-width: 100%;
   width: auto;
   filter: grayscale(100%);
   opacity: 0.75;
