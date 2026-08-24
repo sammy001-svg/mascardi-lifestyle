@@ -76,8 +76,8 @@ $val = static function (string $key, $default = '') use ($post, $isEdit) {
                 <textarea class="form-control" id="excerpt" name="excerpt" rows="3"><?= e($val('excerpt')) ?></textarea>
             </div>
 
-            <!-- Cover image -->
-            <div class="form-group js-media-field">
+            <!-- Cover image (upload OR pick one from the library) -->
+            <div class="form-group js-media-field" data-picked-name="picked_media_ids" data-picker-single="true">
                 <label class="form-label">Cover image</label>
                 <?php if ($isEdit && $post['cover_image_path']): ?>
                     <div style="margin-bottom:10px;">
@@ -87,10 +87,10 @@ $val = static function (string $key, $default = '') use ($post, $isEdit) {
                 <?php endif; ?>
                 <input class="form-control" type="file" id="cover_image" name="cover_image"
                        accept="image/png,image/jpeg,image/webp">
-                <div class="form-hint">Upload a new image to replace the current cover. JPEG, PNG or WEBP.</div>
+                <div class="form-hint">Upload a new image, or pick one from the library.</div>
                 <div class="js-picked-list" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
                 <button type="button" class="btn btn-outline btn-sm js-open-media-picker"
-                        data-picker-mode="single" style="margin-top:6px;">Pick from Library</button>
+                        data-picker-mode="multi" style="margin-top:6px;">Pick from Library</button>
             </div>
 
             <!-- Rich-text body (TinyMCE) -->

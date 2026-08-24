@@ -50,8 +50,8 @@ $val = static function (string $key, $default = '') use ($album, $isEdit) {
                 <textarea class="form-control" id="description" name="description" rows="3"><?= e($val('description')) ?></textarea>
             </div>
 
-            <!-- Cover image -->
-            <div class="form-group js-media-field">
+            <!-- Cover image (upload OR pick one from the library) -->
+            <div class="form-group js-media-field" data-picked-name="picked_cover_ids" data-picker-single="true">
                 <label class="form-label">Cover image</label>
                 <?php if ($isEdit && $album['cover_image_path']): ?>
                     <div style="margin-bottom:10px;">
@@ -61,18 +61,21 @@ $val = static function (string $key, $default = '') use ($album, $isEdit) {
                 <?php endif; ?>
                 <input class="form-control" type="file" id="cover_image" name="cover_image"
                        accept="image/png,image/jpeg,image/webp">
-                <div class="form-hint">Used as the album card thumbnail. JPEG, PNG or WEBP.</div>
+                <div class="form-hint">Used as the album card thumbnail. Upload one, or pick from the library.</div>
                 <div class="js-picked-list" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
                 <button type="button" class="btn btn-outline btn-sm js-open-media-picker"
-                        data-picker-mode="single" style="margin-top:6px;">Pick from Library</button>
+                        data-picker-mode="multi" style="margin-top:6px;">Pick cover from Library</button>
             </div>
 
-            <!-- Upload gallery photos -->
-            <div class="form-group">
+            <!-- Gallery photos (upload multiple OR pick from the library) -->
+            <div class="form-group js-media-field" data-picked-name="picked_media_ids">
                 <label class="form-label" for="images">Add photos to album</label>
                 <input class="form-control" type="file" id="images" name="images[]"
                        accept="image/png,image/jpeg,image/webp" multiple>
-                <div class="form-hint">Select multiple images at once. They will be added to the album.</div>
+                <div class="form-hint">Upload multiple at once, or pick existing images from the library below.</div>
+                <div class="js-picked-list" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+                <button type="button" class="btn btn-outline btn-sm js-open-media-picker"
+                        data-picker-mode="multi" style="margin-top:6px;">Pick photos from Library</button>
             </div>
 
             <div class="form-group form-check">

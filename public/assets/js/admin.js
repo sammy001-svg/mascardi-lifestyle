@@ -116,7 +116,13 @@
         if (!list) {
             return;
         }
-        if (list.querySelector('input[value="' + mediaId + '"]')) {
+        // The POST field name is configurable per field (cover vs gallery use
+        // different names), defaulting to picked_media_ids for back-compat.
+        var name = field.getAttribute("data-picked-name") || "picked_media_ids";
+        // Single-select fields (e.g. a cover) keep only the most recent pick.
+        if (field.getAttribute("data-picker-single") === "true") {
+            list.innerHTML = "";
+        } else if (list.querySelector('input[value="' + mediaId + '"]')) {
             return; // already picked
         }
 
@@ -124,7 +130,7 @@
         chip.className = "media-picked-chip";
         chip.innerHTML =
             '<img src="' + preview + '" alt="">' +
-            '<input type="hidden" name="picked_media_ids[]" value="' + mediaId + '">' +
+            '<input type="hidden" name="' + name + '[]" value="' + mediaId + '">' +
             '<button type="button" aria-label="Remove">&times;</button>';
         chip.querySelector("button").addEventListener("click", function () {
             chip.remove();
