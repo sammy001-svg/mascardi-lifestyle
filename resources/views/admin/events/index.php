@@ -11,11 +11,21 @@
     <div class="table-wrap">
         <table class="data-table">
             <thead>
-                <tr><th>Event</th><th>Type</th><th>Starts</th><th>Venue</th><th>Capacity</th><th>Status</th><th></th></tr>
+                <tr>
+                    <th>Event</th>
+                    <th>Type</th>
+                    <th>Starts</th>
+                    <th>Venue</th>
+                    <th>Capacity</th>
+                    <th>Timing</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
                 <?php foreach ($events as $event): ?>
-                    <tr>
+                    <?php $isPast = strtotime($event['starts_at']) < time(); ?>
+                    <tr<?= $isPast ? ' style="opacity:0.72;"' : '' ?>>
                         <td><strong><?= e($event['title']) ?></strong></td>
                         <td>
                             <?php if ($event['event_type'] === 'paid'): ?>
@@ -24,9 +34,16 @@
                                 <span class="badge badge-green">Free RSVP</span>
                             <?php endif; ?>
                         </td>
-                        <td><?= e($event['starts_at']) ?></td>
+                        <td style="white-space:nowrap;font-size:0.85rem;"><?= e(date('d M Y, H:i', strtotime($event['starts_at']))) ?></td>
                         <td><?= e($event['venue'] ?: '—') ?></td>
                         <td><?= $event['capacity'] !== null ? (int) $event['capacity'] : 'Unlimited' ?></td>
+                        <td>
+                            <?php if ($isPast): ?>
+                                <span class="badge badge-gray">&#10003; Concluded</span>
+                            <?php else: ?>
+                                <span class="badge badge-rose">&#9679; Upcoming</span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php if ($event['is_active']): ?>
                                 <span class="badge badge-green">Active</span>
@@ -45,7 +62,7 @@
                     </tr>
                 <?php endforeach; ?>
                 <?php if (empty($events)): ?>
-                    <tr><td colspan="7">
+                    <tr><td colspan="8">
                         <div class="empty-state">
                             <div class="empty-state__icon">&#127903;</div>
                             <p>No events yet. Schedule your first one.</p>

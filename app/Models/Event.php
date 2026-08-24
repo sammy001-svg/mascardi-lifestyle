@@ -15,7 +15,10 @@ final class Event
         if ($activeOnly) {
             $sql .= ' WHERE is_active = 1';
         }
-        $sql .= ' ORDER BY starts_at ASC';
+        // Upcoming first, then most-recent past events at the bottom
+        $sql .= ' ORDER BY (starts_at >= NOW()) DESC,
+                           CASE WHEN starts_at >= NOW() THEN starts_at END ASC,
+                           starts_at DESC';
         return Database::connection()->query($sql)->fetchAll();
     }
 
@@ -58,9 +61,20 @@ final class Event
 
     public static function findBySlug(string $slug): ?array
     {
+        // Returns any active event regardless of date, so past events remain
+        // accessible on the detail page (for archive/showcase purposes).
         $stmt = Database::connection()->prepare('SELECT * FROM events WHERE slug = :slug AND is_active = 1 LIMIT 1');
         $stmt->execute(['slug' => $slug]);
         return $stmt->fetch() ?: null;
+    }
+
+    /**
+     * Returns true when the event's start time is already in the past.
+     * Used in controllers and views to decide whether to show the registration form.
+     */
+    public static function isPast(array $event): bool
+    {
+        return strtotime($event['starts_at']) < time();
     }
 
     public static function slugExists(string $slug, ?int $excludeId = null): bool

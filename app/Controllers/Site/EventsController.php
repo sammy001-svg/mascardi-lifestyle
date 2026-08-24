@@ -21,11 +21,16 @@ final class EventsController
 {
     public function index(): void
     {
+        $all      = Event::recent(100);
+        $upcoming = array_values(array_filter($all, fn($e) => !Event::isPast($e)));
+        $past     = array_values(array_filter($all, fn($e) =>  Event::isPast($e)));
+
         View::render('site/events/index', [
             'pageTitle' => 'Events — Mascardi Lifestyle',
             'bodyClass' => 'inner-page',
-            'settings' => Setting::all(),
-            'events' => Event::recent(50),
+            'settings'  => Setting::all(),
+            'upcoming'  => $upcoming,
+            'past'      => $past,
         ], 'site');
     }
 
@@ -39,8 +44,9 @@ final class EventsController
         View::render('site/events/detail', [
             'pageTitle' => $event['title'] . ' — Mascardi Lifestyle',
             'bodyClass' => 'inner-page',
-            'settings' => Setting::all(),
-            'event' => $event,
+            'settings'  => Setting::all(),
+            'event'     => $event,
+            'isPast'    => Event::isPast($event),
         ], 'site');
     }
 
@@ -49,6 +55,12 @@ final class EventsController
         $event = Event::findBySlug($slug);
         if (!$event) {
             Response::notFound();
+        }
+
+        // Block registration for past events — redirect back with an error message
+        if (Event::isPast($event)) {
+            Session::flash('error', 'Registrations for this event are now closed — the event has already taken place.');
+            Response::redirect(site_url('events/' . $slug));
         }
 
         $input = Request::all(['name', 'phone', 'email', 'quantity']);
